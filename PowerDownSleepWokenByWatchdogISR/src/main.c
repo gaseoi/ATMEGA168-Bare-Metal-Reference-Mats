@@ -1,3 +1,7 @@
+//Testing out watchdog ISR as a wake trigger for the AVR in power down sleep
+//LED at PB1
+//Didnt change any fuse settings in AVRDUDESS, worked anyway.
+
 #include <AVR/io.h>
 #include <util/delay.h> 
 #include <avr/power.h>
@@ -14,7 +18,7 @@ void enableWatchDogInterrupt(void){
   wdt_reset();
   MCUSR &= ~_BV(WDRF); 
   WDTCSR |= _BV(WDCE) | _BV(WDE);
-  WDTCSR = _BV(WDIE) | _BV(WDP0) |  _BV(WDP3);
+  WDTCSR = _BV(WDIE) | _BV(WDP0) |  _BV(WDP3); //Sets a timeout of 8 seconds
   sei();
 }
 
@@ -33,4 +37,5 @@ int main(void){
       enterPowerDown();
     }
     return 0;
+
 }
